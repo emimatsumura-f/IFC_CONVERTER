@@ -1,4 +1,5 @@
 import ifcopenshell
+import os
 
 def extract_profile_information(element):
     """
@@ -17,7 +18,7 @@ def extract_profile_information(element):
 
 def main():
     # IFCファイルを読み込む
-    file_path = "20241102.ifc"    # ファイルパスを修正
+    file_path = "20250316.ifc"
     
     try:
         ifc_file = ifcopenshell.open(file_path)

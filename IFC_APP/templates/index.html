@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IFC Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .result-section {
+            margin: 20px 0;
+        }
+        .result-section h2 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>IFC Converter</h1>
+        <div>
+            <button onclick="processIFC('20250316.ifc')">20250316.ifc を処理</button>
+            <button onclick="processIFC('20241102.ifc')">20241102.ifc を処理</button>
+        </div>
+        <div class="result-section">
+            <h2>梁(Beam)の情報</h2>
+            <div id="beam-results"></div>
+        </div>
+        <div class="result-section">
+            <h2>柱(Column)の情報</h2>
+            <div id="column-results"></div>
+        </div>
+    </div>
+
+    <script>
+        function processIFC(filename) {
+            document.getElementById('beam-results').innerHTML = 'Loading...';
+            document.getElementById('column-results').innerHTML = 'Loading...';
+
+            fetch(`/process_ifc/${filename}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        document.getElementById('beam-results').innerHTML = 
+                            data.beams.join('<br>');
+                        document.getElementById('column-results').innerHTML = 
+                            data.columns.join('<br>');
+                    } else {
+                        alert('エラーが発生しました: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    alert('エラーが発生しました: ' + error);
+                });
+        }
+    </script>
+</body>
+</html>
